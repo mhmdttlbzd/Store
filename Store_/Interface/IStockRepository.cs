@@ -11,6 +11,6 @@ namespace Store.Interface
     {
         string SaleProduct(int productId, int cnt); 
         string BuyProduct(Stock productInStock); 
-        List<Stock> GetSalesProductList();
+        List<SaleProductViewModel> GetSalesProductList();
     }
 }

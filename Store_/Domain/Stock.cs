@@ -10,8 +10,8 @@ namespace Store.Domain
     {
         public int StockId { get; set; }
         public string Name { get; set; }
-        public string ProductId { get; set; }
-        public string ProductQuantity { get; set; }
-        public string ProductPrice { get; set; }
+        public int ProductId { get; set; }
+        public int ProductQuantity { get; set; }
+        public int ProductPrice { get; set; }
     }
 }
