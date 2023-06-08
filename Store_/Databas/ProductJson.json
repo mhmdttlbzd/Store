@@ -1,13 +1,1 @@
-{
-  "compilerOptions": {
-    "noImplicitAny": false,
-    "noEmitOnError": true,
-    "removeComments": false,
-    "sourceMap": true,
-    "target": "es5"
-  },
-  "exclude": [
-    "node_modules",
-    "wwwroot"
-  ]
-}
+[{"ProductId":1,"Name":"Mmm123_","Barcode":"2"},{"ProductId":2,"Name":"Aaa123_","Barcode":"1313"}]

@@ -15,13 +15,16 @@ namespace Store.Interface
         private List<Product> products;
         public ProductRepository()
         {
-            FileStream JsonProductFile = File.Open(@"..\Databas\ProductJson.json", FileMode.OpenOrCreate);
+            FileStream JsonProductFile = File.Open("..\\..\\..\\Databas\\ProductJson.json", FileMode.OpenOrCreate);
             products = JsonSerializer.Deserialize<List<Product>>(JsonProductFile);
+            JsonProductFile.Close();
         }
         public string AddProduct(Product product)
         {
             try{ CheckProductName(product.Name);}
             catch(Exception ex) { return(ex.Message); }
+
+            products.Add(product);
             SaveChanges();
             return "ok";
 
@@ -44,7 +47,8 @@ namespace Store.Interface
         private void SaveChanges()
         {
             string JsonSerialize = JsonSerializer.Serialize(products);
-            File.WriteAllText(@"..\Databas\ProductJson.json", JsonSerialize);
+            File.WriteAllText("..\\..\\..\\Databas\\ProductJson.json", JsonSerialize);
+            //JsonSerialize.Close();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Store.Domain;
+using Store_.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace Store.Interface
         string SaleProduct(int productId, int cnt); 
         string BuyProduct(Stock productInStock); 
         List<SaleProductViewModel> GetSalesProductList();
+        List<SockProductViewModel> GetStockProductList();
     }
 }

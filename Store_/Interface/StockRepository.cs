@@ -1,5 +1,6 @@
 ﻿using Store.Domain;
 using Store.Interface;
+using Store_.Domain;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,19 +16,19 @@ namespace Store.Interface
         private List<Stock> stocks;
         public StockRepository()
         {
-            FileStream JsonProductFile = File.Open(@"..\Databas\StockJson.json", FileMode.OpenOrCreate);
+            FileStream JsonProductFile = File.Open("..\\..\\..\\Databas\\StockJson.json", FileMode.OpenOrCreate);
             stocks = JsonSerializer.Deserialize<List<Stock>>(JsonProductFile);
             JsonProductFile.Close();
         }
         public string BuyProduct(Stock productInStock)
         {
             IProductRepository productRepository = new ProductRepository();
-            bool ExistStock=false;
+            bool ExistStock = false;
             foreach (var stock in stocks)
             {
                 if (stock.StockId == productInStock.StockId)
                 {
-                    var price = (stock.ProductPrice * stock.ProductQuantity) + (productInStock.ProductPrice * productInStock.ProductQuantity);  
+                    var price = (stock.ProductPrice * stock.ProductQuantity) + (productInStock.ProductPrice * productInStock.ProductQuantity);
                     stock.ProductQuantity += productInStock.ProductQuantity;
                     stock.ProductPrice = price / stock.ProductQuantity;
                     ExistStock = true;
@@ -44,11 +45,11 @@ namespace Store.Interface
         public List<SaleProductViewModel> GetSalesProductList()
         {
             List<SaleProductViewModel> sales = new List<SaleProductViewModel>();
-            FileStream fs = new FileStream(@"..\Databas\sales.txt", FileMode.Open, FileAccess.Read, FileShare.None);
+            FileStream fs = new FileStream("..\\..\\..\\Databas\\sales.txt", FileMode.Open, FileAccess.Read, FileShare.None);
             StreamReader sr = new StreamReader(fs);
             while (!sr.EndOfStream)
             {
-                sales.Add(new SaleProductViewModel(sr.ReadLine()));          
+                sales.Add(new SaleProductViewModel(sr.ReadLine()));
             }
             sr.Close();
             fs.Close();
@@ -58,12 +59,12 @@ namespace Store.Interface
         public string SaleProduct(int productId, int cnt)
         {
             IProductRepository productRepository = new ProductRepository();
-            if (cnt >= GetProductQuantity(productId))
+            if (cnt <= GetProductQuantity(productId))
             {
                 stocks.Where(s => s.ProductId == productId).SingleOrDefault().ProductQuantity -= cnt;
                 var saledStock = stocks.Where(s => s.ProductId == productId).SingleOrDefault();
-                SaleProductViewModel saled = new SaleProductViewModel(saledStock.Name,saledStock.ProductId,cnt, saledStock.ProductPrice);
-                using (TextWriter writer = File.AppendText(@"..\Databas\sales.txt"))
+                SaleProductViewModel saled = new SaleProductViewModel(saledStock.Name, saledStock.ProductId, cnt, saledStock.ProductPrice);
+                using (TextWriter writer = File.AppendText("..\\..\\..\\Databas\\sales.txt"))
                 {
                     writer.WriteLine(saled.ToString());
                 }
@@ -78,11 +79,22 @@ namespace Store.Interface
         private void SaveChanges()
         {
             string JsonSerialize = JsonSerializer.Serialize(stocks);
-            File.WriteAllText(@"..\Databas\StockJson.json", JsonSerialize);
+            File.WriteAllText("..\\..\\..\\Databas\\StockJson.json", JsonSerialize);
         }
         private int GetProductQuantity(int productId)
         {
             return stocks.Where(s => s.ProductId == productId).SingleOrDefault().ProductQuantity;
+        }
+
+
+
+        public List<SockProductViewModel> GetStockProductList()
+        {
+            IProductRepository pr = new ProductRepository();
+            var model = new SockProductViewModel();
+            var products = pr.GetProductList();
+            var spList = stocks.Join(products, s => s.ProductId, p => p.ProductId, (stock, product) => new SockProductViewModel(stock.StockId,stock.Name,stock.ProductId,stock.ProductQuantity,stock.ProductPrice,product.Barcode)).ToList();
+            return spList;
         }
     }
 }

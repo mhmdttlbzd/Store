@@ -1,13 +1,1 @@
-{
-  "compilerOptions": {
-    "noImplicitAny": false,
-    "noEmitOnError": true,
-    "removeComments": false,
-    "sourceMap": true,
-    "target": "es5"
-  },
-  "exclude": [
-    "node_modules",
-    "wwwroot"
-  ]
-}
+[{"StockId":1,"Name":"Mmm123_","ProductId":1,"ProductQuantity":13,"ProductPrice":45000},{"StockId":2,"Name":"Aaa123_","ProductId":2,"ProductQuantity":13,"ProductPrice":3500}]
